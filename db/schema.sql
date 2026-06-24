@@ -17,4 +17,11 @@ CREATE TABLE messages (
   sender_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   receiver_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE dogs (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  breed text NOT NULL,
+  age integer NOT NULL, 
+  ratings integer NOT NULL,
+  user_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE
 );
