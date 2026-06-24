@@ -10,3 +10,11 @@ CREATE TABLE users (
   username text NOT NULL UNIQUE,
   password text NOT NULL
 );
+
+CREATE TABLE messages (
+  id serial PRIMARY KEY,
+  content text NOT NULL,
+  sender_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  receiver_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
