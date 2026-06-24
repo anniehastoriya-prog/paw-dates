@@ -10,3 +10,8 @@ CREATE TABLE users (
   username text NOT NULL UNIQUE,
   password text NOT NULL
 );
+
+CREATE TABLE playdates (
+  
+);
+
