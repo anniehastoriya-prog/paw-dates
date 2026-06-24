@@ -10,3 +10,12 @@ CREATE TABLE users (
   username text NOT NULL UNIQUE,
   password text NOT NULL
 );
+
+CREATE TABLE dogs (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  breed text NOT NULL,
+  age integer NOT NULL, 
+  ratings integer NOT NULL,
+  user_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE
+);
