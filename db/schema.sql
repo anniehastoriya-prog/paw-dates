@@ -10,3 +10,10 @@ CREATE TABLE users (
   username text NOT NULL UNIQUE,
   password text NOT NULL
 );
+
+CREATE TABLE ratings (
+  id serial PRIMARY KEY,
+  sender_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE,
+  paws integer NOT NULL,
+  comments text NOT NULL
+);
