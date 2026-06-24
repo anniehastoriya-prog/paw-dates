@@ -11,6 +11,12 @@ CREATE TABLE users (
   password text NOT NULL
 );
 
+CREATE TABLE messages (
+  id serial PRIMARY KEY,
+  content text NOT NULL,
+  sender_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  receiver_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP
 CREATE TABLE dogs (
   id serial PRIMARY KEY,
   name text NOT NULL,
