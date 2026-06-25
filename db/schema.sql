@@ -23,7 +23,7 @@ CREATE TABLE playdates (
 
 CREATE TABLE ratings (
   id serial PRIMARY KEY,
-  sender_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE,
+  receiver_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE,
   paws integer NOT NULL,
   comments text NOT NULL
   );
