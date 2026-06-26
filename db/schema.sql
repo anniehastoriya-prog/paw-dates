@@ -34,7 +34,7 @@ CREATE TABLE dogs (
   breed text NOT NULL,
   age integer NOT NULL, 
   ratings integer NOT NULL,
-  user_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE
+  user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE playdates (
   id SERIAL PRIMARY KEY,
