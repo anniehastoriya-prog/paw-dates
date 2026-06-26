@@ -11,19 +11,11 @@ CREATE TABLE users (
   password text NOT NULL
 );
 
-CREATE TABLE playdates (
-  id SERIAL PRIMARY KEY,
-  request_dog_id INTEGER NOT NULL REFERENCES dog(id) ON DELETE CASCADE,
-  recipient_dog_id INTEGER NOT NULL REFERENCES dog(id) ON DELETE CASCADE,
-  timeslot DATE NOT NULL,
-  status text NOT NULL DEFAULT 'pending' CHECK ( status IN ('pending', 'confirmed', 'declined','cancelled')),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 
-);
 
 CREATE TABLE ratings (
   id serial PRIMARY KEY,
-  receiver_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE,
+  receiver_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   paws integer NOT NULL,
   comments text NOT NULL
   );
@@ -43,4 +35,13 @@ CREATE TABLE dogs (
   age integer NOT NULL, 
   ratings integer NOT NULL,
   user_id integer NOT NULL REFERENCES user(id) ON DELETE CASCADE
+);
+CREATE TABLE playdates (
+  id SERIAL PRIMARY KEY,
+  request_dog_id INTEGER NOT NULL REFERENCES dogs(id) ON DELETE CASCADE,
+  recipient_dog_id INTEGER NOT NULL REFERENCES dogs(id) ON DELETE CASCADE,
+  timeslot DATE NOT NULL,
+  status text NOT NULL DEFAULT 'pending' CHECK ( status IN ('pending', 'confirmed', 'declined','cancelled')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+
 );
