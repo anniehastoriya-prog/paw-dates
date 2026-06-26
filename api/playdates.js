@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 export default router;
+
 import {
   getAllPlaydates,
   getPlaydateById,
@@ -9,6 +10,13 @@ import {
   updatePlaydateStatus,
   deletePlaydate,
 } from "#db/queries/playdates";
+
+router.param("id", async (req, res, next, id) => {
+  const playdate = await getPlaydateById(id);
+  if (!playdate) return res.status(404).send("Playdate not found.");
+  req.playdate = playdate;
+  next();
+});
 
 // GET /playdates  -- every playdate, newest first
 router.get("/", async (req, res) => {
@@ -28,17 +36,18 @@ router.post("/", async (req, res) => {
   res.status(201).send(playdate);
 });
 
-// GET /playdates/dog/:dogId  --- one dog's schedule (sent + received)
+// GET /playdates/dog/:dogId  -- one dog's schedule (sent + received)
+// Uses :dogId, NOT :id, so the param middleware above doesn't run here --
+// which is correct, since this is a dog id, not a playdate id.
 router.get("/dog/:dogId", async (req, res) => {
   const playdates = await getPlaydatesByDogId(req.params.dogId);
   res.send(playdates);
 });
 
 // GET /playdates/:id  -- a single playdate
-router.get("/:id", async (req, res) => {
-  const playdate = await getPlaydateById(req.params.id);
-  if (!playdate) return res.status(404).send("Playdate not found.");
-  res.send(playdate);
+// req.playdate was already fetched and existence-checked by router.param.
+router.get("/:id", (req, res) => {
+  res.send(req.playdate);
 });
 
 // PATCH /playdates/:id  -- accept / decline / cancel (status change)
@@ -46,13 +55,11 @@ router.patch("/:id", async (req, res) => {
   const { status } = req.body;
   if (!status) return res.status(400).send("status is required.");
   const playdate = await updatePlaydateStatus(req.params.id, status);
-  if (!playdate) return res.status(404).send("Playdate not found.");
   res.send(playdate);
 });
 
 // DELETE /playdates/:id
 router.delete("/:id", async (req, res) => {
-  const playdate = await deletePlaydate(req.params.id);
-  if (!playdate) return res.status(404).send("Playdate not found.");
+  await deletePlaydate(req.params.id);
   res.sendStatus(204);
 });
